@@ -369,7 +369,11 @@ bool parseURL(demux_t *demux)
         return false;
 
     vlc_url_t *url = &(sys->url);
+#if CHECK_VLC_VERSION(3, 0)
+    vlc_UrlParse(url, path);
+#else
     vlc_UrlParse(url, path, 0);
+#endif
 
     if(url->psz_host == 0 || *url->psz_host == 0)
         return false;

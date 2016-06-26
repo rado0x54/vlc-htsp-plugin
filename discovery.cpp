@@ -256,7 +256,11 @@ bool GetChannels(services_discovery_t *sd)
 
         input_item_SetArtworkURL(ch.item, ch.cicon.c_str());
 
+#if CHECK_VLC_VERSION(3, 0)
+        ch.item->i_type = ITEM_TYPE_STREAM;
+#else
         ch.item->i_type = ITEM_TYPE_NET;
+#endif
         for(std::string tag: ch.tags)
             services_discovery_AddItem(sd, ch.item, tag.c_str());
 
