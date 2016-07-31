@@ -80,7 +80,11 @@ struct demux_sys_t : public sys_common_t
         ,hadIFrame(false)
         ,drops(0)
         ,epg(0)
+#if CHECK_VLC_VERSION(3,0)
+        ,thread({0})
+#else
         ,thread(0)
+#endif
         ,requestSpeed(INT_MIN)
         ,requestSeek(-1)
         ,doDisable(false)
@@ -460,11 +464,19 @@ void CloseHTSP(vlc_object_t *obj)
     if(!sys)
         return;
 
+#if CHECK_VLC_VERSION(3, 0)
+    if(sys->thread.handle)
+#else
     if(sys->thread)
+#endif
     {
         vlc_cancel(sys->thread);
         vlc_join(sys->thread, 0);
+#if CHECK_VLC_VERSION(3, 0)
+        sys->thread.handle = 0;
+#else
         sys->thread = 0;
+#endif
     }
 
     delete sys;

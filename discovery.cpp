@@ -46,7 +46,11 @@ struct tmp_channel
 struct services_discovery_sys_t : public sys_common_t
 {
     services_discovery_sys_t()
+#if CHECK_VLC_VERSION(3, 0)
+        :thread({0})
+#else
         :thread(0)
+#endif
         ,disconnect(false)
     {}
 
@@ -331,11 +335,19 @@ void CloseSD(vlc_object_t *obj)
     if(!sys)
         return;
 
+#if CHECK_VLC_VERSION(3, 0)
+    if(sys->thread.handle)
+#else
     if(sys->thread)
+#endif
     {
         vlc_cancel(sys->thread);
         vlc_join(sys->thread, 0);
+#if CHECK_VLC_VERSION(3, 0)
+        sys->thread.handle = 0;
+#else
         sys->thread = 0;
+#endif
     }
 
     delete sys;
