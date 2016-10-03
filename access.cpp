@@ -247,6 +247,15 @@ bool ConnectHTSP(demux_t *demux)
     return res;
 }
 
+#if CHECK_VLC_VERSION(3,0)
+static char *strdup_if_nonempty(const char *str)
+{
+    if (str)
+        return strdup(str);
+    return NULL;
+}
+#endif
+
 void PopulateEPG(demux_t *demux)
 {
     demux_sys_t *sys = demux->p_sys;
@@ -259,7 +268,11 @@ void PopulateEPG(demux_t *demux)
     if(!res.isValid())
         return;
 
+#if CHECK_VLC_VERSION(3,0)
+    sys->epg = vlc_epg_New(0, sys->channelId);
+#else
     sys->epg = vlc_epg_New(0);
+#endif
 
     std::shared_ptr<HtsList> events = res.getRoot()->getList("events");
     for(uint32_t i = 0; i < events->count(); i++)
@@ -276,7 +289,14 @@ void PopulateEPG(demux_t *demux)
         int64_t stop = event->getS64("stop");
         int duration = stop - start;
 
-#if CHECK_VLC_VERSION(2,1)
+#if CHECK_VLC_VERSION(3,0)
+        vlc_epg_event_t *epg_event = vlc_epg_event_New(event->getU32("eventId"), start, duration);
+        epg_event->psz_name = strdup_if_nonempty(event->getStr("title").c_str());
+        epg_event->psz_short_description = strdup_if_nonempty(event->getStr("summary").c_str());
+        epg_event->psz_description = strdup_if_nonempty(event->getStr("description").c_str());
+        if (!vlc_epg_AddEvent(sys->epg, epg_event))
+            vlc_epg_event_Delete(epg_event);
+#elif CHECK_VLC_VERSION(2,1)
         vlc_epg_AddEvent(sys->epg, start, duration, event->getStr("title").c_str(), event->getStr("summary").c_str(), event->getStr("description").c_str(), 0);
 #else
         vlc_epg_AddEvent(sys->epg, start, duration, event->getStr("title").c_str(), event->getStr("summary").c_str(), event->getStr("description").c_str());
