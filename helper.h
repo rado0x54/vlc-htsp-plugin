@@ -25,6 +25,7 @@
 #include "htsmessage.h"
 
 #include <vlc_common.h>
+#include <libvlc_version.h>
 
 
 #define CFG_PREFIX "htsp-"
@@ -61,8 +62,8 @@ bool ReadSuccessEx(vlc_object_t *obj, sys_common_t *sys, HtsMessage m, const std
 #define ReadSuccess(a, b, c, d) ReadSuccessEx(VLC_OBJECT(a), b, c, d)
 
 #define CHECK_VLC_VERSION(major, minor) \
-        (VLC_PLUGIN_MAJOR > (major) || \
-         (VLC_PLUGIN_MAJOR == (major) && VLC_PLUGIN_MINOR >= (minor)))
+        (LIBVLC_VERSION_MAJOR > (major) || \
+         (LIBVLC_VERSION_MAJOR == (major) && LIBVLC_VERSION_MINOR >= (minor)))
 
 
 #endif
