@@ -1,8 +1,14 @@
-I am no longer working on this, primarily because I stopped watching TV and thus using tvheadend.
-Also, if you export an m3u playlist of your channels from tvh, and open it in VLC, you have the same set of features
-this plugin offers, just without all the weird bugs.
+# HTSP VLC Module
+
+Trying to revive the code in order to integrate it natively in VLC, VLC for iOS/tvOS and VLCKit Applications.
+
+After watching the FC Bayern vs. Real Madrid soccer game on 4/19/17 and experience the difference in quality 
+between http (vlc) and htsp (kodi) streaming I decided to pursue this project.
+
+Thank you, BtbN for the awesome work so far.
 
 -------------------------------------
+## Legacy Notes.
 
 Compile using make and put resulting libhtsp_plugin.so somewhere VLC finds it.
 
