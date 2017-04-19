@@ -192,6 +192,8 @@ bool GetChannels(services_discovery_t *sd)
 
             uint32_t cnum = m.getRoot()->getU32("channelNumber");
 
+            msg_Info(sd, "Found Channel %s with Id %d and Number %d", cname.c_str(), cid, cnum);    
+
             std::string cicon = m.getRoot()->getStr("channelIcon");
 
             std::ostringstream oss;
@@ -256,7 +258,7 @@ bool GetChannels(services_discovery_t *sd)
 
         input_item_SetArtworkURL(ch.item, ch.cicon.c_str());
 
-        ch.item->i_type = ITEM_TYPE_NET;
+        ch.item->i_type = ITEM_TYPE_STREAM;
         for(std::string tag: ch.tags)
             services_discovery_AddItem(sd, ch.item, tag.c_str());
 

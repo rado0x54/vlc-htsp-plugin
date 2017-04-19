@@ -58,7 +58,7 @@ bool TransmitMessageEx(vlc_object_t *obj, sys_common_t *sys, HtsMessage m)
         return false;
     }
 
-    if(net_Write(obj, sys->netfd, NULL, buf, len) != (ssize_t)len)
+    if(net_Write(obj, sys->netfd, buf, len) != (ssize_t)len)
     {
         msg_Dbg(obj, "net_Write failed");
         return false;
@@ -88,7 +88,7 @@ HtsMessage ReadMessageEx(vlc_object_t *obj, sys_common_t *sys)
         return HtsMessage();
     }
 
-    if((readSize = net_Read(obj, sys->netfd, NULL, &len, sizeof(len), true)) != sizeof(len))
+    if((readSize = net_Read(obj, sys->netfd, &len, sizeof(len))) != sizeof(len))
     {
         net_Close(sys->netfd);
         sys->netfd = -1;
@@ -114,7 +114,7 @@ HtsMessage ReadMessageEx(vlc_object_t *obj, sys_common_t *sys)
 
     buf = (char*)malloc(len);
 
-    if((readSize = net_Read(obj, sys->netfd, NULL, buf, len, true)) != (ssize_t)len)
+    if((readSize = net_Read(obj, sys->netfd, buf, len)) != (ssize_t)len)
     {
         net_Close(sys->netfd);
         sys->netfd = -1;

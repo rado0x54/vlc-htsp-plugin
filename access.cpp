@@ -255,7 +255,7 @@ void PopulateEPG(demux_t *demux)
     if(!res.isValid())
         return;
 
-    sys->epg = vlc_epg_New(0);
+    sys->epg = vlc_epg_New(0, sys->channelId);
 
     std::shared_ptr<HtsList> events = res.getRoot()->getList("events");
     for(uint32_t i = 0; i < events->count(); i++)
@@ -272,11 +272,12 @@ void PopulateEPG(demux_t *demux)
         int64_t stop = event->getS64("stop");
         int duration = stop - start;
 
-#if CHECK_VLC_VERSION(2,1)
-        vlc_epg_AddEvent(sys->epg, start, duration, event->getStr("title").c_str(), event->getStr("summary").c_str(), event->getStr("description").c_str(), 0);
-#else
-        vlc_epg_AddEvent(sys->epg, start, duration, event->getStr("title").c_str(), event->getStr("summary").c_str(), event->getStr("description").c_str());
-#endif
+        vlc_epg_event_t *epgEvent = vlc_epg_event_New(1, start, duration);
+        epgEvent->psz_name = strdup(event->getStr("title").c_str());
+        epgEvent->psz_short_description = strdup(event->getStr("summary").c_str());
+        epgEvent->psz_description = strdup(event->getStr("description").c_str());
+      
+        vlc_epg_AddEvent(sys->epg, epgEvent);
 
         int64_t now = time(0);
         if(now >= start && now < stop)
@@ -363,16 +364,27 @@ bool SubscribeHTSP(demux_t *demux)
 bool parseURL(demux_t *demux)
 {
     demux_sys_t *sys = demux->p_sys;
-    const char *path = demux->psz_location;
+    //add "htsp://" to the path... vlc_UrlParse expects the protocol to be  there
+    std::string pathWithProtocol(demux->psz_location);
+    pathWithProtocol = "htsp://" + pathWithProtocol;
 
-    if(path == 0 || *path == 0)
-        return false;
+    const char *path = pathWithProtocol.c_str();
+
+    msg_Dbg(demux, "Path: %s", path);
+    //const char *path = demux->psz_location;
+
+    if(path == 0 || *path == 0) {
+         msg_Dbg(demux, "ERROR 1");
+         return false;
+    }
 
     vlc_url_t *url = &(sys->url);
-    vlc_UrlParse(url, path, 0);
+    vlc_UrlParse(url, path);
 
-    if(url->psz_host == 0 || *url->psz_host == 0)
+    if(url->psz_host == 0 || *url->psz_host == 0) {
+        msg_Dbg(demux, "ERROR 2");
         return false;
+    }
     else
         sys->host = url->psz_host;
 
@@ -390,6 +402,8 @@ bool parseURL(demux_t *demux)
         sys->channelId = 0;
     else
         sys->channelId = atoi(url->psz_path + 1); // Remove leading '/'
+
+    msg_Info(demux, "ChannelID: %d", sys->channelId);
 
     return true;
 }
