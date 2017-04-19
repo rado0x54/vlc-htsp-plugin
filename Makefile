@@ -1,4 +1,4 @@
-LOCAL_VLC = osx
+LOCAL_VLC = vlc_deps
 PREFIX = /usr
 LD = ld
 CC = gcc
@@ -68,13 +68,13 @@ win32: $(C_SOURCES:%.c=%.ow) $(CXX_SOURCES:%.cpp=%.ow)
 	$(CXX) -shared -static-libgcc -static -o libhtsp_plugin.dll $(C_SOURCES:%.c=%.o) $(CXX_SOURCES:%.cpp=%.o) win32/lib/libvlccore.lib -lws2_32 -lm
 
 %.ox: %.c
-	$(CC) -pipe -O2 -Wall -Wextra -std=gnu99 -I. -Iosx/include/vlc -Iosx/include/vlc/plugins -DMODULE_STRING=\"htsp\" -DPIC -fPIC -D__PLUGIN__ -D_FILE_OFFSET_BITS=64 -D_REENTRANT -D_THREAD_SAFE -c $<
+	$(CC) -pipe -O2 -Wall -Wextra -std=gnu99 -I. -Ivlc_deps/include/vlc -Ivlc_deps/include/vlc/plugins -DMODULE_STRING=\"htsp\" -DPIC -fPIC -D__PLUGIN__ -D_FILE_OFFSET_BITS=64 -D_REENTRANT -D_THREAD_SAFE -c $<
 
 %.ox: %.cpp
-	$(CXX) -pipe -O2 -Wall -Wextra -std=gnu++11 -I. -Iosx/include/vlc -Iosx/include/vlc/plugins -DMODULE_STRING=\"htsp\" -DPIC -fPIC -D__PLUGIN__ -D_FILE_OFFSET_BITS=64 -D_REENTRANT -D_THREAD_SAFE -c $<
+	$(CXX) -pipe -O2 -Wall -Wextra -std=gnu++11 -I. -Ivlc_deps/include/vlc -Ivlc_deps/include/vlc/plugins -DMODULE_STRING=\"htsp\" -DPIC -fPIC -D__PLUGIN__ -D_FILE_OFFSET_BITS=64 -D_REENTRANT -D_THREAD_SAFE -c $<
 
 osx: $(C_SOURCES:%.c=%.ox) $(CXX_SOURCES:%.cpp=%.ox)
-	$(CXX) -shared -o libhtsp_plugin.dylib $(C_SOURCES:%.c=%.o) $(CXX_SOURCES:%.cpp=%.o) -Losx/lib -lvlccore
+	$(CXX) -shared -o libhtsp_plugin.dylib $(C_SOURCES:%.c=%.o) $(CXX_SOURCES:%.cpp=%.o) -Lvlc_deps/lib -lvlccore
 
 .PHONY: all install install-strip uninstall clean mostlyclean win32 osx
 
