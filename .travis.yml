@@ -7,3 +7,6 @@ before_script:
 - (cd vlc_deps && ln -s 2.2.4/lib_osx lib)
 script:
 - make osx
+after_script:
+# Some Test output
+- otool -L libhtsp_plugin.dylib
