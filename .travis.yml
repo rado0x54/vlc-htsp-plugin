@@ -7,8 +7,10 @@ before_script:
 - unzip vlc_deps/2.2.4.zip -d vlc_deps
 - (cd vlc_deps && ln -s 2.2.4/include)
 - (cd vlc_deps && ln -s 2.2.4/lib_osx lib)
+- (./bootstrap)
+- (./configure)
 script:
-- make osx
+- make
 after_script:
 # Some Test output
-- otool -L libhtsp_plugin.dylib
+- otool -L .libs/libhtsp_plugin.so 
