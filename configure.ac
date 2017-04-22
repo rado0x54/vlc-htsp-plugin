@@ -17,7 +17,6 @@ AX_CXX_COMPILE_STDCXX(11)
 
 AM_PROG_LIBTOOL
 PKG_PROG_PKG_CONFIG()
-AC_MSG_WARN([Testoutput])
 
 # Checks for libraries.
 
