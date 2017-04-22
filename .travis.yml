@@ -13,4 +13,4 @@ script:
 - make
 after_script:
 # Some Test output
-- otool -L .libs/libhtsp_plugin.so 
+- otool -L .libs/libhtsp_plugin.dylib 

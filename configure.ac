@@ -1,8 +1,8 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.60])
-AC_INIT([vlclib_libhtsp_plugin], [0.1], [web@rado0x54.de])
+AC_PREREQ([2.69])
+AC_INIT([libhtsp_plugin],[0.1],[web@rado0x54.de])
 AM_INIT_AUTOMAKE(subdir-objects foreign)
 AC_CONFIG_SRCDIR([src/access.cpp])
 AC_CONFIG_HEADERS([config.h])
@@ -15,8 +15,9 @@ AC_LANG([C++])
 
 AX_CXX_COMPILE_STDCXX(11)
 
-AM_PROG_LIBTOOL
-PKG_PROG_PKG_CONFIG()
+LT_INIT([dlopen win32-dll shared disable-static])
+
+PKG_PROG_PKG_CONFIG
 
 # Checks for libraries.
 
@@ -58,6 +59,7 @@ if ${HAVE_INT_VLC_PLUGIN}; then
 fi
 
 
+AC_SUBST(LIBEXT)
 
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT

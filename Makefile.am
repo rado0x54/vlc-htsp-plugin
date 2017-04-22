@@ -12,4 +12,4 @@ libhtsp_plugin_la_CFLAGS = $(VLC_PLUGIN_CFLAGS) -DMODULE_STRING=\"htsp\"
 libhtsp_plugin_la_CPPFLAGS = $(libhtsp_plugin_la_CFLAGS)
 libhtsp_plugin_la_LIBADD = $(VLC_PLUGIN_LIBS)
 libhtsp_plugin_la_LDFLAGS = \
-      -avoid-version -module -export-symbol-regex ^vlc_entry
+      -avoid-version -export-symbol-regex ^vlc_entry
