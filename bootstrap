@@ -2,6 +2,6 @@
 ### bootstrap script ###############################
 
 echo "Regenerating autotools files"
-autoreconf --install --force --symlink || exit 1
+autoreconf --install --force --verbose || exit 1
 
 echo "Now run ./configure, make, and make install."

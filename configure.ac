@@ -3,11 +3,12 @@
 
 AC_PREREQ([2.69])
 AC_INIT([libhtsp_plugin],[0.1],[web@rado0x54.de])
-AM_INIT_AUTOMAKE(subdir-objects foreign)
+AC_CONFIG_AUX_DIR([build-aux])
+AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([src/access.cpp])
 AC_CONFIG_HEADERS([config.h])
 
-AC_CONFIG_MACRO_DIRS([m4])
+AM_INIT_AUTOMAKE(subdir-objects foreign)
 
 # Checks for programs.
 AC_LANG([C])
