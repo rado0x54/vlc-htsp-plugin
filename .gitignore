@@ -3,7 +3,6 @@
 *.lo
 *.la
 *.pc
-*.tar.*
 Makefile.in
 Makefile
 aclocal.m4
@@ -25,4 +24,5 @@ libtool
 .dirstamp
 .deps
 .libs
-vlc_deps/
+vlc_deps/include
+vlc_deps/lib
