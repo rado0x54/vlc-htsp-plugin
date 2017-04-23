@@ -1,1 +1,0 @@
-Copy the vlc sdk folder in here, then build using MinGW-MSYS, run "make win32".
