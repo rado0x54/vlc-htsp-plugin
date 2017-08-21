@@ -4,3 +4,4 @@ libhts/*.a
 *.o
 *.so
 win32/sdk/
+cmake-build-debug/
