@@ -65,10 +65,6 @@ FIND_PATH(LIBVLC_PLUGIN_INCLUDE_DIR vlc/plugins/vlc_common.h
 
 FIND_PATH(LIBVLC_PLUGIN_INCLUDE_DIR PATHS "${CMAKE_INCLUDE_PATH}/vlc" NAMES plugin/vlc_common.h)
 
-if (LIBVLC_PLUGIN_INCLUDE_DIR)
-   set(LIBVLC_PLUGIN_INCLUDE_DIR ${LIBVLC_PLUGIN_INCLUDE_DIR}/vlc/plugins)
-endif (LIBVLC_PLUGIN_INCLUDE_DIR)
-
 
 #Put here path to custom location
 #example: /home/user/vlc/lib etc..
@@ -107,8 +103,8 @@ ENDIF (LIBVLC_INCLUDE_DIR AND LIBVLC_PLUGIN_INCLUDE_DIR AND LIBVLC_LIBRARY AND L
 
 IF (LIBVLC_FOUND)
    IF (NOT LIBVLC_FIND_QUIETLY)
-      MESSAGE(STATUS "Found LibVLC include-dir path: ${LIBVLC_INCLUDE_DIR}")
-      MESSAGE(STATUS "Found LibVLC plugin-include-dir path: ${LIBVLC_PLUGIN_INCLUDE_DIR}")
+      MESSAGE(STATUS "Found LibVLC include-dir path: ${LIBVLC_INCLUDE_DIR}/vlc")
+      MESSAGE(STATUS "Found LibVLC plugin-include-dir path: ${LIBVLC_PLUGIN_INCLUDE_DIR}/vlc/plugins")
       MESSAGE(STATUS "Found LibVLC library path:${LIBVLC_LIBRARY}")
       MESSAGE(STATUS "Found LibVLCcore library path:${LIBVLCCORE_LIBRARY}")
    ENDIF (NOT LIBVLC_FIND_QUIETLY)

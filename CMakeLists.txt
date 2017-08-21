@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.5)
 project(vlc_htsp_plugin)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
@@ -23,8 +23,10 @@ set(SOURCE_FILES
 ADD_DEFINITIONS(-D__PLUGIN__ -D_FILE_OFFSET_BITS=64 -D_REENTRANT -D_THREAD_SAFE -DMODULE_STRING=\"htsp\")
 
 INCLUDE_DIRECTORIES(
+        ${LIBVLC_INCLUDE_DIR}
         ${LIBVLC_INCLUDE_DIR}/vlc
         ${LIBVLC_PLUGIN_INCLUDE_DIR}
+        ${LIBVLC_PLUGIN_INCLUDE_DIR}/vlc/plugins
 )
 
 add_library(htsp_plugin SHARED ${SOURCE_FILES})
