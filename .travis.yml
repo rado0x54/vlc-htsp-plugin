@@ -4,13 +4,13 @@ os: osx
 compiler: gcc
 osx_image: xcode7.3
 before_script:
-- unzip vlc_deps/2.2.4.zip -d vlc_deps
-- (cd vlc_deps && ln -s 2.2.4/include)
-- (cd vlc_deps && ln -s 2.2.4/lib_osx lib)
-- (./bootstrap)
-- (./configure)
+- unzip contribs/2.2.4.zip -d contribs
+- (cd contribs && ln -s 2.2.4/include include)
+- (cd contribs && ln -s 2.2.4/lib_osx lib)
+- mkdir build
+- (cd build && cmake ..)
 script:
-- make
+- (cd build && make VERBOSE=1)
 after_script:
 # Some Test output
-- otool -L .libs/libhtsp_plugin.dylib 
+- otool -L build/libhtsp_plugin.dylib
