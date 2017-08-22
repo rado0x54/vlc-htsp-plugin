@@ -4,9 +4,7 @@ os: osx
 compiler: gcc
 osx_image: xcode7.3
 before_script:
-- unzip contribs/osx/2.2.4.zip -d contribs
-- (cd contribs && ln -s 2.2.4/include include)
-- (cd contribs && ln -s 2.2.4/lib_osx lib)
+- tar xvfj contribs/osx/2.2.4.tar.bz2 -C contribs/ --strip-components=1
 - mkdir build
 - (cd build && cmake ..)
 script:
