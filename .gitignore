@@ -1,7 +1,5 @@
-libhts/*.o
-libhts/*.a
-*.creator.user
-*.o
-*.so
-win32/sdk/
 cmake-build-debug/
+build/
+.idea/
+contribs/include
+contribs/lib
