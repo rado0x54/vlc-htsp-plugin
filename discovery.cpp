@@ -266,9 +266,17 @@ bool GetChannels(services_discovery_t *sd)
         ch.item->i_type = ITEM_TYPE_NET;
 #endif
         for(std::string tag: ch.tags)
+#if CHECK_VLC_VERSION(3, 0)
+            services_discovery_AddItemCat(sd, ch.item, tag.c_str());
+#else
             services_discovery_AddItem(sd, ch.item, tag.c_str());
+#endif
 
+#if CHECK_VLC_VERSION(3, 0)
+        services_discovery_AddItemCat(sd, ch.item, "All Channels");
+#else
         services_discovery_AddItem(sd, ch.item, "All Channels");
+#endif
 
 
         sys->channelMap[ch.cid] = ch;
