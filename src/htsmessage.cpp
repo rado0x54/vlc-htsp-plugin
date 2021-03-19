@@ -428,7 +428,7 @@ HtsMessage HtsMessage::Deserialize(uint32_t length, void *buf)
 bool HtsMessage::Serialize(uint32_t *length, void **buf)
 {
     unsigned char *resBuf = 0;
-    uint32_t resLength = 4;
+    uint32_t resLength = 0;
     *length = 0;
     *buf = 0;
 

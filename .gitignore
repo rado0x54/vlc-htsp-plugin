@@ -3,3 +3,8 @@ build/
 .idea/
 contribs/include
 contribs/lib
+Makefile
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+libhtsp_plugin.so

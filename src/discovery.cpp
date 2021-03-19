@@ -46,7 +46,11 @@ struct tmp_channel
 struct services_discovery_sys_t : public sys_common_t
 {
     services_discovery_sys_t()
+#if CHECK_VLC_VERSION(3, 0)
+        :thread({0})
+#else
         :thread(0)
+#endif
         ,disconnect(false)
     {}
 
@@ -256,11 +260,23 @@ bool GetChannels(services_discovery_t *sd)
 
         input_item_SetArtworkURL(ch.item, ch.cicon.c_str());
 
+#if CHECK_VLC_VERSION(3, 0)
+        ch.item->i_type = ITEM_TYPE_STREAM;
+#else
         ch.item->i_type = ITEM_TYPE_NET;
+#endif
         for(std::string tag: ch.tags)
+#if CHECK_VLC_VERSION(3, 0)
+            services_discovery_AddItemCat(sd, ch.item, tag.c_str());
+#else
             services_discovery_AddItem(sd, ch.item, tag.c_str());
+#endif
 
+#if CHECK_VLC_VERSION(3, 0)
+        services_discovery_AddItemCat(sd, ch.item, "All Channels");
+#else
         services_discovery_AddItem(sd, ch.item, "All Channels");
+#endif
 
 
         sys->channelMap[ch.cid] = ch;
@@ -327,11 +343,19 @@ void CloseSD(vlc_object_t *obj)
     if(!sys)
         return;
 
+#if CHECK_VLC_VERSION(3, 0)
+    if(sys->thread.handle)
+#else
     if(sys->thread)
+#endif
     {
         vlc_cancel(sys->thread);
         vlc_join(sys->thread, 0);
+#if CHECK_VLC_VERSION(3, 0)
+        sys->thread.handle = 0;
+#else
         sys->thread = 0;
+#endif
     }
 
     delete sys;
