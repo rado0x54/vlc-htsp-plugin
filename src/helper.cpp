@@ -58,7 +58,11 @@ bool TransmitMessageEx(vlc_object_t *obj, sys_common_t *sys, HtsMessage m)
         return false;
     }
 
+#if CHECK_VLC_VERSION(3, 0)
+    if(net_Write(obj, sys->netfd, buf, len) != (ssize_t)len)
+#else
     if(net_Write(obj, sys->netfd, NULL, buf, len) != (ssize_t)len)
+#endif
     {
         msg_Dbg(obj, "net_Write failed");
         return false;
@@ -88,7 +92,11 @@ HtsMessage ReadMessageEx(vlc_object_t *obj, sys_common_t *sys)
         return HtsMessage();
     }
 
+#if CHECK_VLC_VERSION(3, 0)
+    if((readSize = net_Read(obj, sys->netfd, &len, sizeof(len))) != sizeof(len))
+#else
     if((readSize = net_Read(obj, sys->netfd, NULL, &len, sizeof(len), true)) != sizeof(len))
+#endif
     {
         net_Close(sys->netfd);
         sys->netfd = -1;
@@ -114,7 +122,11 @@ HtsMessage ReadMessageEx(vlc_object_t *obj, sys_common_t *sys)
 
     buf = (char*)malloc(len);
 
+#if CHECK_VLC_VERSION(3, 0)
+    if((readSize = net_Read(obj, sys->netfd, buf, len)) != (ssize_t)len)
+#else
     if((readSize = net_Read(obj, sys->netfd, NULL, buf, len, true)) != (ssize_t)len)
+#endif
     {
         net_Close(sys->netfd);
         sys->netfd = -1;
